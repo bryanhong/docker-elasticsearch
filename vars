@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#### BEGIN DOCKER RUN VARIABLES
+
+# Name of the container
+APP_NAME=elasticsearch
+# Docker Hub Username or internal registry (e.g. docker-registry.example.com:5000)
+REPO_NAME="myusername"
+# TCP port that the Docker host will expose the Elasticsearch API on
+DOCKER_HOST_API_PORT=9200
+# The directory on the Docker host to store Elasticsearch data
+ELASTICSEARCH_DATADIR=/dockerhost/dir/for/elasticsearch/data
+
+# The next few variables are for configuring an Elasticsearch cluster, they are optional
+# If you aren't going to build a cluster, comment them out 
+
+# Name for your cluster, this should be set the same on other nodes (optional)
+CLUSTER_NAME=mycluster
+# FQDN or IP addresses of the other members of the cluster, preserve the quoting in the example, it is important
+CLUSTER_NODES='["node2.example.com", "node3.example.com"]'
+# IP address that other cluster members can reach the Docker host on, specifically port 9300 for cluster communications
+# Note: hostname --ip-address requires that DNS resolution for the host is setup, if not just set the IP here
+DOCKER_HOST_IP=`hostname --ip-address`
+# Short name for this Elasticsearch instance
+NODE_NAME=node1
+# TCP port that the Docker host will expose the Elasticsearch Transport (cluster members communicate over this port)
+DOCKER_HOST_TRANSPORT_PORT=9300
+
+#### END DOCKER RUN VARIABLES
+#### BEGIN FRAMEWORK VARIABLES
+  
+# Get an SHA sum of all files involved in building the image so the image can be tagged
+# this will provide assurance that any image with the same tag was built the same way. 
+SHASUM=`find . -type f \
+        -not -path "*/.git/*" \
+        -not -path "*.gitignore*" \
+        -not -path "*builds*" \
+        -not -path "*run.sh*" \
+        -exec shasum {} + | awk '{print $1}' | sort | shasum | cut -c1-4`
+  
+TAG="`date +%Y%m%d`-${SHASUM}"
+
+#### END FRAMEWORK VARIABLES
