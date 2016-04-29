@@ -134,9 +134,9 @@ git clone https://github.com/bryanhong/docker-elasticsearch.git
 
 ### Commands and variables
 
-* ```vars```: Variables for Docker registry, the application, and aptly repository data location
+* ```vars```: Variables for Docker registry and the application
 * ```build.sh```: Build the Docker image locally
-* ```run.sh```: Starts the Docker container, it the image hasn't been built locally, it is fetched from the repository set in vars
+* ```run.sh```: Starts the Docker container, if the image hasn't been built locally, it is fetched from the repository set in vars
 * ```push.sh```: Pushes the latest locally built image to the repository set in vars
 * ```shell.sh```: get a shell within the container
 
